@@ -1,23 +1,35 @@
-todos = []
+def get_todos(file_path="todos.txt"):
+    """
+    Read a list of items out of a text file.
+    """
+    with open(file_path, 'r') as file_to_read:
+        todos_list = file_to_read.readlines()
+    return todos_list
+
+
+def write_todos(todos_list, file_path="todos.txt"):
+    """
+    Write items to a text file.
+    """
+    with open(file_path, 'w') as file_to_write:
+        file_to_write.writelines(todos_list)
+
 
 while True:
     user_action = input("Type add, show, edit, complete, or exit: ")
     user_action = user_action.strip()
 
-    if 'add' in user_action:
+    if user_action.startswith("add"):
         todo = user_action[4:]
 
-        with open('todos.txt', 'r') as file:
-            todos = file.readlines()
+        todos = get_todos()
 
-        todos.append(todo)
+        todos.append(todo + '\n')
 
-        with open('todos.txt', 'w') as file:
-            file.writelines(todos)
-            file.close()
-    elif 'show' in user_action:
-        with open('todos.txt', 'r') as file:
-            todos = file.readlines()
+        write_todos(todos, 'todos.txt')
+
+    elif user_action.startswith("show"):
+        todos = get_todos()
 
         # new_todos = [item.strip('\n') for item in todos]
 
@@ -25,37 +37,49 @@ while True:
             item = item.strip('\n')
             row = f"{index + 1} - {item}"
             print(row)
-    elif 'edit' in user_action:
-        number = int(user_action[5:])
-        number = number - 1
+    elif user_action.startswith("edit"):
+        try:
+            number = int(user_action[5:])
+            number = number - 1
 
-        with open('todos.txt', 'r') as file:
-            todos = file.readlines()
+            todos = get_todos()
+            # Error handling numbers out of range
+            if number > len(todos):
+                print("That number is out of range.")
+                continue
 
-        new_todo = input("Enter the new value for this todo: ")
-        todos[number] = new_todo + '\n'
+            new_todo = input("Enter the new value for this todo: ")
+            todos[number] = new_todo + '\n'
 
-        with open('todos.txt', 'w') as file:
-            file.writelines(todos)
-    elif 'complete' in user_action:
-        number = int(user_action[9:])
+            write_todos(todos, 'todos.txt')
+        # Error handling wrong input
+        except ValueError:
+            print("Your command is not valid.")
+            continue
+    elif user_action.startswith("complete"):
+        try:
+            number = int(user_action[9:])
 
-        with open('todos.txt', 'r') as file:
-            todos = file.readlines()
+            todos = get_todos()
+            if number > len(todos):
+                print("That number is out of range.")
+                continue
 
-        index = number - 1
-        todo_to_remove = todos[index].strip('\n')
+            index = number - 1
+            todo_to_remove = todos[index].strip('\n')
 
-        todos.pop(index)
+            todos.pop(index)
 
-        with open('todos.txt', 'w') as file:
-            file.writelines(todos)
+            write_todos(todos, 'todos.txt')
 
-        message = f"Todo \"{todo_to_remove}\" was removed from the list."
-        print(message)
-    elif 'exit' in user_action:
+            message = f"Todo \"{todo_to_remove}\" was removed from the list."
+            print(message)
+        except ValueError:
+            print("Your command is not valid.")
+            continue
+    elif user_action.startswith("exit"):
         break
     else:
         print("Command is not valid.")
 
-print("Adios!")
+        print("Adios!")
