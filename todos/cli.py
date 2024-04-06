@@ -1,20 +1,8 @@
-def get_todos(file_path="todos.txt"):
-    """
-    Read a list of items out of a text file.
-    """
-    with open(file_path, 'r') as file_to_read:
-        todos_list = file_to_read.readlines()
-    return todos_list
+import functions
+import time
 
-
-def write_todos(todos_list, file_path="todos.txt"):
-    """
-    Write items to a text file.
-    """
-    with open(file_path, 'w') as file_to_write:
-        file_to_write.writelines(todos_list)
-
-
+now = time.strftime("%b %d, %Y %H:%M:%S")
+print("It is: ", now)
 while True:
     user_action = input("Type add, show, edit, complete, or exit: ")
     user_action = user_action.strip()
@@ -22,14 +10,14 @@ while True:
     if user_action.startswith("add"):
         todo = user_action[4:]
 
-        todos = get_todos()
+        todos = functions.get_todos()
 
         todos.append(todo + '\n')
 
-        write_todos(todos, 'todos.txt')
+        functions.write_todos(todos, 'todos.txt')
 
     elif user_action.startswith("show"):
-        todos = get_todos()
+        todos = functions.get_todos()
 
         # new_todos = [item.strip('\n') for item in todos]
 
@@ -42,7 +30,7 @@ while True:
             number = int(user_action[5:])
             number = number - 1
 
-            todos = get_todos()
+            todos = functions.get_todos()
             # Error handling numbers out of range
             if number > len(todos):
                 print("That number is out of range.")
@@ -51,7 +39,7 @@ while True:
             new_todo = input("Enter the new value for this todo: ")
             todos[number] = new_todo + '\n'
 
-            write_todos(todos, 'todos.txt')
+            functions.write_todos(todos, 'todos.txt')
         # Error handling wrong input
         except ValueError:
             print("Your command is not valid.")
@@ -60,7 +48,7 @@ while True:
         try:
             number = int(user_action[9:])
 
-            todos = get_todos()
+            todos = functions.get_todos()
             if number > len(todos):
                 print("That number is out of range.")
                 continue
@@ -70,7 +58,7 @@ while True:
 
             todos.pop(index)
 
-            write_todos(todos, 'todos.txt')
+            functions.write_todos(todos, 'todos.txt')
 
             message = f"Todo \"{todo_to_remove}\" was removed from the list."
             print(message)
