@@ -1,4 +1,7 @@
-FILEPATH = "todos.txt"
+from pathlib import Path
+
+cwd = Path.cwd()
+FILEPATH = '../txt_files/todos.txt'
 
 
 def get_todos(file_path=FILEPATH):
