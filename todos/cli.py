@@ -14,7 +14,7 @@ while True:
 
         todos.append(todo + '\n')
 
-        functions.write_todos(todos, 'todos.txt')
+        functions.write_todos(todos, '../txt_files/todos.txt')
 
     elif user_action.startswith("show"):
         todos = functions.get_todos()
@@ -39,7 +39,7 @@ while True:
             new_todo = input("Enter the new value for this todo: ")
             todos[number] = new_todo + '\n'
 
-            functions.write_todos(todos, 'todos.txt')
+            functions.write_todos(todos, '../txt_files/todos.txt')
         # Error handling wrong input
         except ValueError:
             print("Your command is not valid.")
@@ -58,7 +58,7 @@ while True:
 
             todos.pop(index)
 
-            functions.write_todos(todos, 'todos.txt')
+            functions.write_todos(todos, '../txt_files/todos.txt')
 
             message = f"Todo \"{todo_to_remove}\" was removed from the list."
             print(message)
